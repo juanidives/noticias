@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diário J&T — Edição do Dia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a18;
+    --ink-soft: #4a4a46;
+    --ink-muted: #8a8a84;
+    --paper: #f7f4ee;
+    --paper-warm: #efe9da;
+    --rule: #c8c0b0;
+    --rule-strong: #1a1a18;
+    --tom-accent: #1a3a6e;
+    --juani-accent: #0f6e56;
+    --cat-politics: #1a3a6e;
+    --cat-economy: #3b6d11;
+    --cat-international: #533ab7;
+    --cat-culture: #993556;
+    --cat-analysis: #854f0b;
+    --cat-ai: #0f6e56;
+    --cat-tech: #185fa5;
+  }
+
+  html { font-size: 16px; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    min-height: 100vh;
+    padding: 0 0 4rem;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* MASTHEAD */
+  .masthead {
+    border-top: 4px solid var(--rule-strong);
+    padding-top: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 0;
+  }
+
+  .masthead-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .journal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .journal-title em {
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .masthead-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    text-align: right;
+    line-height: 1.6;
+  }
+
+  .masthead-tagline {
+    font-size: 12px;
+    color: var(--ink-muted);
+    font-style: italic;
+    border-top: 0.5px solid var(--rule);
+    padding-top: 0.5rem;
+    letter-spacing: 0.2px;
+  }
+
+  /* SECTION HEADER */
+  .section-wrap {
+    margin-top: 2rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-top: 3px solid var(--rule-strong);
+    padding-top: 0.6rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .section-header.tom { border-top-color: var(--tom-accent); }
+  .section-header.juani { border-top-color: var(--juani-accent); }
+
+  .section-left { display: flex; flex-direction: column; gap: 2px; }
+
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .section-title.tom { color: var(--tom-accent); }
+  .section-title.juani { color: var(--juani-accent); }
+
+  .section-sources {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--ink-muted);
+    text-align: right;
+    line-height: 1.6;
+    max-width: 220px;
+  }
+
+  .section-rule {
+    height: 1.5px;
+    background: var(--rule);
+    margin-bottom: 0;
+  }
+
+  /* ARTICLES GRID */
+  .articles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  @media (max-width: 560px) {
+    .articles-grid { grid-template-columns: 1fr; }
+  }
+
+  .article-card {
+    padding: 1rem 1rem 1rem 0;
+    border-bottom: 0.5px solid var(--rule);
+  }
+
+  .articles-grid .article-card:nth-child(even) {
+    padding-left: 1rem;
+    border-left: 0.5px solid var(--rule);
+    padding-right: 0;
+  }
+
+  .article-category {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 0.35rem;
+  }
+
+  .article-category.politics { color: var(--cat-politics); }
+  .article-category.economy { color: var(--cat-economy); }
+  .article-category.international { color: var(--cat-international); }
+  .article-category.culture { color: var(--cat-culture); }
+  .article-category.analysis { color: var(--cat-analysis); }
+  .article-category.ai { color: var(--cat-ai); }
+  .article-category.tech { color: var(--cat-tech); }
+
+  .article-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 0.45rem;
+    color: var(--ink);
+  }
+
+  .article-summary {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    font-weight: 300;
+  }
+
+  .article-source {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--ink-muted);
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* LOADING SKELETON */
+  .skeleton-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  @media (max-width: 560px) { .skeleton-wrap { grid-template-columns: 1fr; } }
+
+  .skeleton-card {
+    padding: 1rem 1rem 1rem 0;
+    border-bottom: 0.5px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .skeleton-card:nth-child(even) {
+    padding-left: 1rem;
+    border-left: 0.5px solid var(--rule);
+    padding-right: 0;
+  }
+
+  .sk {
+    background: var(--paper-warm);
+    border-radius: 2px;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* CONTROLS */
+  .controls {
+    max-width: 860px;
+    margin: 2rem auto 0;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .gen-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.65rem 1.5rem;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .gen-btn:hover { opacity: 0.8; }
+  .gen-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .spinner {
+    width: 12px; height: 12px;
+    border: 1.5px solid rgba(247,244,238,0.3);
+    border-top-color: var(--paper);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .status-line {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-muted);
+  }
+
+  .error-card {
+    padding: 1rem 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #a32d2d;
+    grid-column: 1 / -1;
+  }
+
+  /* FOOTER */
+  .footer {
+    max-width: 860px;
+    margin: 3rem auto 0;
+    padding: 1rem 1.5rem 0;
+    border-top: 0.5px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--ink-muted);
+  }
+
+  .footer-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="masthead">
+    <div class="masthead-row">
+      <div class="journal-title">Diário <em>J&amp;T</em></div>
+      <div class="masthead-meta">
+        <span id="today-date">—</span><br>
+        São Paulo, Brasil
+      </div>
+    </div>
+    <div class="masthead-tagline">Sua curadoria diária · Política · Economia · Cultura · Inteligência Artificial · Tecnologia</div>
+  </div>
+
+  <!-- SEÇÃO TOM -->
+  <div class="section-wrap">
+    <div class="section-header tom">
+      <div class="section-left">
+        <span class="section-eyebrow">Seção</span>
+        <span class="section-title tom">Tom</span>
+      </div>
+      <div class="section-sources">Piauí · Folha de S.Paulo<br>G1 · Lemon</div>
+    </div>
+    <div class="section-rule"></div>
+    <div id="tom-content">
+      <div class="skeleton-wrap">
+        <div class="skeleton-card"><div class="sk" style="height:9px;width:35%"></div><div class="sk" style="height:15px;width:90%"></div><div class="sk" style="height:15px;width:75%"></div><div class="sk" style="height:12px;width:85%"></div><div class="sk" style="height:12px;width:70%"></div></div>
+        <div class="skeleton-card"><div class="sk" style="height:9px;width:40%"></div><div class="sk" style="height:15px;width:85%"></div><div class="sk" style="height:12px;width:90%"></div><div class="sk" style="height:12px;width:65%"></div></div>
+        <div class="skeleton-card"><div class="sk" style="height:9px;width:30%"></div><div class="sk" style="height:15px;width:92%"></div><div class="sk" style="height:12px;width:80%"></div><div class="sk" style="height:12px;width:72%"></div></div>
+        <div class="skeleton-card"><div class="sk" style="height:9px;width:38%"></div><div class="sk" style="height:15px;width:88%"></div><div class="sk" style="height:12px;width:75%"></div><div class="sk" style="height:12px;width:68%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO JUANI -->
+  <div class="section-wrap">
+    <div class="section-header juani">
+      <div class="section-left">
+        <span class="section-eyebrow">Seção</span>
+        <span class="section-title juani">Juani</span>
+      </div>
+      <div class="section-sources">TechCrunch · MIT Tech Review<br>The Verge · Ars Technica · Wired</div>
+    </div>
+    <div class="section-rule"></div>
+    <div id="juani-content">
+      <div class="skeleton-wrap">
+        <div class="skeleton-card"><div class="sk" style="height:9px;width:35%"></div><div class="sk" style="height:15px;width:90%"></div><div class="sk" style="height:15px;width:75%"></div><div class="sk" style="height:12px;width:85%"></div><div class="sk" style="height:12px;width:70%"></div></div>
+        <div class="skeleton-card"><div class="sk" style="height:9px;width:40%"></div><div class="sk" style="height:15px;width:85%"></div><div class="sk" style="height:12px;width:90%"></div><div class="sk" style="height:12px;width:65%"></div></div>
+        <div class="skeleton-card"><div class="sk" style="height:9px;width:30%"></div><div class="sk" style="height:15px;width:92%"></div><div class="sk" style="height:12px;width:80%"></div><div class="sk" style="height:12px;width:72%"></div></div>
+        <div class="skeleton-card"><div class="sk" style="height:9px;width:38%"></div><div class="sk" style="height:15px;width:88%"></div><div class="sk" style="height:12px;width:75%"></div><div class="sk" style="height:12px;width:68%"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <button class="gen-btn" id="gen-btn" onclick="generateAll()">
+    <span class="spinner" id="spinner"></span>
+    <span id="btn-text">Gerar edição de hoje</span>
+  </button>
+  <span class="status-line" id="status"></span>
+</div>
+
+<div class="footer">
+  <span class="footer-brand">Diário J&amp;T</span>
+  <span class="footer-note">Gerado com Claude AI · Powered by web search</span>
+</div>
+
+<script>
+  const today = new Date();
+  document.getElementById('today-date').textContent = today.toLocaleDateString('pt-BR', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+
+  function renderArticles(containerId, articles) {
+    const el = document.getElementById(containerId);
+    if (!articles || articles.length === 0) {
+      el.innerHTML = '<div class="articles-grid"><div class="error-card">Nenhuma matéria encontrada para hoje.</div></div>';
+      return;
+    }
+    const cards = articles.map(a => `
+      <div class="article-card">
+        <div class="article-category ${a.cat}">${a.category}</div>
+        <div class="article-headline">${a.headline}</div>
+        <div class="article-summary">${a.summary}</div>
+        <div class="article-source">${a.source}</div>
+      </div>
+    `).join('');
+    el.innerHTML = `<div class="articles-grid">${cards}</div>`;
+  }
+
+  async function fetchSection(prompt, contentId, label) {
+    document.getElementById('status').textContent = `Buscando seção ${label}...`;
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+      const data = await res.json();
+      const textBlock = data.content && data.content.find(b => b.type === 'text');
+      if (!textBlock) throw new Error('Sem resposta da API');
+      let raw = textBlock.text.trim().replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(raw);
+      renderArticles(contentId, parsed.articles);
+    } catch(e) {
+      document.getElementById(contentId).innerHTML =
+        `<div class="articles-grid"><div class="error-card">Erro ao carregar: ${e.message}</div></div>`;
+    }
+  }
+
+  async function generateAll() {
+    const btn = document.getElementById('gen-btn');
+    const spinner = document.getElementById('spinner');
+    const btnText = document.getElementById('btn-text');
+    const status = document.getElementById('status');
+    const dateStr = today.toLocaleDateString('pt-BR');
+
+    btn.disabled = true;
+    spinner.style.display = 'block';
+    btnText.textContent = 'Buscando notícias...';
+
+    ['tom-content', 'juani-content'].forEach(id => {
+      document.getElementById(id).innerHTML = `
+        <div class="skeleton-wrap">
+          <div class="skeleton-card"><div class="sk" style="height:9px;width:35%"></div><div class="sk" style="height:15px;width:90%"></div><div class="sk" style="height:12px;width:80%"></div></div>
+          <div class="skeleton-card"><div class="sk" style="height:9px;width:40%"></div><div class="sk" style="height:15px;width:85%"></div><div class="sk" style="height:12px;width:75%"></div></div>
+        </div>`;
+    });
+
+    const tomPrompt = `Você é um curador jornalístico especializado. Hoje é ${dateStr}. Busque as principais notícias do dia sobre política brasileira, economia, política internacional, cultura e análise política. Priorize fontes como Revista Piauí, Folha de São Paulo, G1 e Lemon. Retorne SOMENTE JSON válido, sem markdown, sem explicação. Mínimo 5 e máximo 10 artigos. Formato exato: {"articles":[{"headline":"título da notícia","summary":"resumo em 2 a 3 frases diretas e informativas","category":"Política","cat":"politics","source":"Folha de São Paulo"}]} Categorias e cats possíveis: Política→politics, Economia→economy, Internacional→international, Cultura→culture, Análise Política→analysis.`;
+
+    const juaniPrompt = `Você é um curador especializado em tecnologia e inteligência artificial. Hoje é ${dateStr}. Busque as principais novidades do dia sobre IA, grandes modelos de linguagem, tendências de tecnologia, startups de IA e inovações relevantes. Priorize fontes como TechCrunch, MIT Technology Review, The Verge, Ars Technica e Wired. Retorne SOMENTE JSON válido, sem markdown, sem explicação. Mínimo 5 e máximo 10 artigos. Formato exato: {"articles":[{"headline":"título da notícia","summary":"resumo em 2 a 3 frases diretas e informativas","category":"Inteligência Artificial","cat":"ai","source":"TechCrunch"}]} Categorias e cats possíveis: Inteligência Artificial→ai, Tecnologia→tech.`;
+
+    await fetchSection(tomPrompt, 'tom-content', 'Tom');
+    await fetchSection(juaniPrompt, 'juani-content', 'Juani');
+
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    btnText.textContent = 'Atualizar edição';
+    status.textContent = 'Atualizado às ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  generateAll();
+</script>
+</body>
+</html>
